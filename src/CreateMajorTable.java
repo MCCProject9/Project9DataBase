@@ -26,6 +26,16 @@ public class CreateMajorTable
 			{
 				statement.execute("CREATE TABLE Majors (MajorCode CHAR(3) PRIMARY KEY, Description CHAR(50))");
 				
+				statement.execute("INSERT INTO Majors VALUES ('88A', 'Math')");
+				
+				statement.execute("INSERT INTO Majors VALUES ('88B', 'English')");
+				
+				statement.execute("INSERT INTO Majors VALUES ('AA9', 'Science')");
+				
+				statement.execute("INSERT INTO Majors VALUES ('990', 'History')");
+				
+				statement.execute("INSERT INTO Majors VALUES ('9EE', 'Band')");
+				
 			}
 			
 			catch (Exception ex)

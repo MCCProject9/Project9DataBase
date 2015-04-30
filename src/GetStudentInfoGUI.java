@@ -1,10 +1,7 @@
 //	GetStudentInfoGUI.java by Kyle Wolff and Brandon VanderMey on 4/30/2015
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,11 +10,16 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+
+import java.sql.*;
+
+//CREATE TABLE Students (StudentNumber CHAR(7) NOT NULL PRIMARY KEY, FirstName CHAR(15), LastName CHAR(25), MajorCode CHAR(3))
 
 @SuppressWarnings("serial")
 public class GetStudentInfoGUI extends JFrame
@@ -86,7 +88,7 @@ public class GetStudentInfoGUI extends JFrame
 		pnlMajorInfo = new JPanel();
 		Border outsideMajor = new EmptyBorder(0, 0, 5, 0);
 		Border insideMajor = BorderFactory.createTitledBorder("Major Info");
-		pnlMajorInfo.setBorder(new CompoundBorder(outsideMajor, insideMajor));
+		pnlMajorInfo.setBorder(new CompoundBorder(outsideMajor, insideMajor));	// Lets me have an inside and outside border.
 		
 		lblMajorCode = new JLabel("Code:");
 		
@@ -129,7 +131,42 @@ public class GetStudentInfoGUI extends JFrame
 	
 	public void findStudent()
 	{
+		final String DB_URL = "jdbc:derby:CollegeDB";
 		
+		try
+		{
+			Connection connection = DriverManager.getConnection(DB_URL);
+			
+			try
+			{
+				Statement statement = connection.createStatement();
+				
+				String sqlStudents = "SELECT FirstName, LastName, Students.MajorCode, Majors.Description "
+						+ "FROM Students JOIN Majors ON Students.MajorCode = Majors.MajorCode "
+						+ "WHERE StudentNumber = '"+txtStudentNumber.getText()+"'";
+				
+				ResultSet result = statement.executeQuery(sqlStudents);
+				
+				result.next();
+				
+				txtStudentFName.setText(result.getString("FirstName").trim());
+				txtStudentLName.setText(result.getString("LastName").trim());
+				txtMajorCode.setText(result.getString("MajorCode").trim());
+				txtMajorDescription.setText(result.getString("Description").trim());
+			}
+			
+			catch (Exception ex)
+			{
+				JOptionPane.showMessageDialog(viewer, "Error: " + ex.getMessage(), "Select Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			connection.close();
+		}
+		
+		catch (Exception ex)
+		{
+			JOptionPane.showMessageDialog(viewer, "Error: " + ex.getMessage(), "Connection Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public static void main(String[] args)

@@ -147,7 +147,12 @@ public class AddNewStudentGUI extends JFrame
 				statement.executeUpdate(sql);
 			}
 			
-			catch (Exception ex) {}
+			catch (Exception ex) 
+			{
+				JOptionPane.showMessageDialog(viewer, "Error: " + ex.getMessage(), "Insert Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			connection.close();
 		}
 		
 		catch (Exception ex)

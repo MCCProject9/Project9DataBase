@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
  
@@ -7,6 +8,7 @@ import java.awt.event.*;
  * the CoffeeDB database.
  */
  
+@SuppressWarnings("serial")
 public class CoffeeDBVeiwer extends JFrame
 {
    JPanel queryPanel;       // A panel to hold the query
